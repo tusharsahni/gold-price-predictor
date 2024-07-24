@@ -3,37 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>Gold Price Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>GoldTrends</title>
     <style>
-        body { padding-top: 50px; }
-        .container { max-width: 600px; }
+        body {
+            padding-top: 4rem;
+            position: relative;
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.5); /* Fallback for browsers that do not support pseudo-elements */
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('Gold-Price-Forecast.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5; /* Adjust the opacity for transparency */
+            z-index: -1;
+        }
+        #prediction-from {
+            z-index: -1;
+        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h2 class="text-center">Gold Price Prediction</h2>
-        <form id="prediction-form">
-            <div class="form-group">
-                <label for="spx">SPX</label>
-                <input type="number" class="form-control" id="spx" required>
+<body class="bg-gray-100" >
+    <!-- Navbar -->
+    <nav class="bg-yellow-500 p-4 fixed w-full top-0 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl text-white font-bold">GoldTrends</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto mt-8 p-4 max-w-lg bg-transparent bg-opacity-75 rounded-lg relative z-10">
+        <h2 class="text-3xl font-semibold text-center mb-4">Gold Price Prediction</h2>
+        <form id="prediction-form" class="bg-transparent p-6 rounded shadow-md">
+            <div class="mb-4">
+                <label for="spx" class="block text-sm font-medium text-gray-700">SPX</label>
+                <input type="number" id="spx" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
             </div>
-            <div class="form-group">
-                <label for="uso">USO</label>
-                <input type="number" class="form-control" id="uso" required>
+            <div class="mb-4">
+                <label for="uso" class="block text-sm font-medium text-gray-700">USO</label>
+                <input type="number" id="uso" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
             </div>
-            <div class="form-group">
-                <label for="slv">SLV</label>
-                <input type="number" class="form-control" id="slv" required>
+            <div class="mb-4">
+                <label for="slv" class="block text-sm font-medium text-gray-700">SLV</label>
+                <input type="number" id="slv" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
             </div>
-            <div class="form-group">
-                <label for="eurusd">EUR/USD</label>
-                <input type="number" step="0.0001" class="form-control" id="eurusd" required>
+            <div class="mb-4">
+                <label for="eurusd" class="block text-sm font-medium text-gray-700">EUR/USD</label>
+                <input type="number" step="0.0001" id="eurusd" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
             </div>
-            <button type="submit" class="btn btn-primary">Predict</button>
+            <button type="submit" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Predict</button>
         </form>
-        <div id="result" class="mt-4"></div>
+        <div id="result" class="mt-4 text-center"></div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-4 mt-8 relative z-10">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 GoldTrends. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script>
         document.getElementById('prediction-form').addEventListener('submit', function(e) {
             e.preventDefault();
