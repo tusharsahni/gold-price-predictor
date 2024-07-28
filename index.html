@@ -23,7 +23,7 @@
             background-image: url('Gold-Price-Forecast.jpg');
             background-size: cover;
             background-position: center;
-            opacity: 0.5; /* Adjust the opacity for transparency */
+            opacity: 0.75; /* Adjust the opacity for transparency */
             z-index: -1;
         }
         #prediction-from {
@@ -41,27 +41,35 @@
 
     <!-- Main Content -->
     <div class="container mx-auto mt-8 p-4 max-w-lg bg-transparent bg-opacity-75 rounded-lg relative z-10">
-        <h2 class="text-3xl font-semibold text-center items-center mb-4 fixed">Gold Price </h2>
+        <h2 class="text-3xl font-semibold text-center items-center mb-4 f"> </h2>
         <form id="prediction-form" class="bg-transparent p-6 rounded ">
             <div class="mb-4">
-                <label for="spx" class="block text-sm font-medium text-gray-700">SPX</label>
+                <label for="spx" class="block text-sm font-medium text-white-700">SPX</label>
                 <input type="number" id="spx" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
             </div>
             <div class="mb-4">
-                <label for="uso" class="block text-sm font-medium text-gray-700">USO</label>
+                <label for="uso" class="block text-sm font-medium text-white-700">USO</label>
                 <input type="number" id="uso" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
             </div>
             <div class="mb-4">
-                <label for="slv" class="block text-sm font-medium text-gray-700">SLV</label>
+                <label for="slv" class="block text-sm font-medium text-white-700">SLV</label>
                 <input type="number" id="slv" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
             </div>
             <div class="mb-4">
-                <label for="eurusd" class="block text-sm font-medium text-gray-700">EUR/USD</label>
+                <label for="eurusd" class="block text-sm font-medium text-white-700">EUR/USD</label>
                 <input type="number" step="0.0001" id="eurusd" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
             </div>
             <button type="submit" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Predict</button>
         </form>
-        <div id="result" class="mt-4 text-center"></div>
+    </div>
+
+    <!-- Modal -->
+    <div id="result-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg relative">
+            <button id="close-modal" class="absolute top-0 right-0 mt-2 mr-2 text-gray-500 hover:text-gray-700">&times;</button>
+            <h4 class="font-bold text-xl mb-4">Predicted Gold Value</h4>
+            <p id="modal-content" class="text-gray-700"></p>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -93,11 +101,17 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('result').innerHTML = `<h4 class="font-bold"> Predicted GLD: ${data.prediction.toFixed(2)}</h4>`;
+                document.getElementById('modal-content').innerHTML = `<h4 class="font-bold items-center  text-xl mb-4">${data.prediction.toFixed(2)}
+                </h4>`;
+                document.getElementById('result-modal').classList.remove('hidden');
             })
             .catch(error => {
                 console.error('Error:', error);
             });
+        });
+
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('result-modal').classList.add('hidden');
         });
     </script>
 </body>
