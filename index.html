@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.7/dist/chartjs-adapter-date-fns.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+   
+    
     <title>GoldTrends</title>
     <style>
         body {
             padding-top: 4rem;
             position: relative;
             z-index: 1;
-            background-color: rgba(0, 0, 0, 0.5); /* Fallback for browsers that do not support pseudo-elements */
+            background-color: rgba(0, 0, 0, 0.5);
         }
-
         body::before {
             content: "";
             position: absolute;
@@ -23,7 +28,7 @@
             background-image: url('Gold-Price-Forecast.jpg');
             background-size: cover;
             background-position: center;
-            opacity: 0.75; /* Adjust the opacity for transparency */
+            opacity: 0.75;
             z-index: -1;
         }
         #prediction-from {
@@ -31,7 +36,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100" >
+<body class="bg-gray-100">
     <!-- Navbar -->
     <nav class="bg-yellow-500 p-4 fixed w-full top-0 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
@@ -41,8 +46,8 @@
 
     <!-- Main Content -->
     <div class="container mx-auto mt-8 p-4 max-w-lg bg-transparent bg-opacity-75 rounded-lg relative z-10">
-        <h2 class="text-3xl font-semibold text-center items-center mb-4 f"> </h2>
-        <form id="prediction-form" class="bg-transparent p-6 rounded ">
+        <h2 class="text-3xl font-semibold text-center items-center mb-4"></h2>
+        <form id="prediction-form" class="bg-transparent p-6 rounded">
             <div class="mb-4">
                 <label for="spx" class="block text-sm font-medium text-white-700">SPX</label>
                 <input type="number" id="spx" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" required>
@@ -61,6 +66,7 @@
             </div>
             <button type="submit" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Predict</button>
         </form>
+        <button id="see-analysis" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">See Analysis</button>
     </div>
 
     <!-- Modal -->
@@ -72,47 +78,26 @@
         </div>
     </div>
 
+    <!-- Charts Modal -->
+    <div id="charts-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg relative">
+            <button id="close-charts-modal" class="absolute top-0 right-0 mt-2 mr-2 text-gray-500 hover:text-gray-700">&times;</button>
+            <h2 class="text-3xl font-semibold text-center mb-4">Gold Price Trends</h2>
+            <canvas id="goldPriceChart"></canvas>
+            <h2 class="text-3xl font-semibold text-center mt-8 mb-4">Correlation Heatmap</h2>
+            <canvas id="correlationHeatmap"></canvas>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-gray-800 text-white p-4 mt-8 relative z-10">
         <div class="container mx-auto text-center">
             <p>&copy; 2024 GoldTrends. All rights reserved.</p>
         </div>
     </footer>
-    <script>
-        document.getElementById('prediction-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const data = {
-                spx: parseFloat(document.getElementById('spx').value),
-                uso: parseFloat(document.getElementById('uso').value),
-                slv: parseFloat(document.getElementById('slv').value),
-                eurusd: parseFloat(document.getElementById('eurusd').value)
-            };
-            fetch('http://127.0.0.1:5000/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('modal-content').innerHTML = `<h4 class="font-bold items-center  text-xl mb-4">${data.prediction.toFixed(2)}
-                </h4>`;
-                document.getElementById('result-modal').classList.remove('hidden');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        });
 
-        document.getElementById('close-modal').addEventListener('click', function() {
-            document.getElementById('result-modal').classList.add('hidden');
-        });
-    </script>
+    <!-- External JavaScript Files -->
+    <script src="formHandler.js"></script>
+    <script src="charts.js"></script>
 </body>
 </html>
